@@ -6,15 +6,15 @@ export default withSolid([
     targets: ['esm', 'cjs']
   },
   {
-    input: 'src/plugins/autoplay.tsx',
+    input: 'src/plugins/autoplay/index.ts',
     targets: ['esm', 'cjs']
   },
   {
-    input: 'src/plugins/adaptiveHeight.tsx',
+    input: 'src/plugins/adaptiveHeight/index.ts',
     targets: ['esm', 'cjs']
   },
   {
-    input: 'src/plugins/adaptiveWidth.tsx',
+    input: 'src/plugins/adaptiveWidth/index.ts',
     targets: ['esm', 'cjs']
   }
 ]);

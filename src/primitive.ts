@@ -1,14 +1,21 @@
-import { on, onMount, createSignal, onCleanup, Accessor, createEffect } from 'solid-js';
-import { access } from '@solid-primitives/utils';
+import {
+  on,
+  onMount,
+  createSignal,
+  onCleanup,
+  Accessor,
+  createEffect,
+} from "solid-js";
+import { access } from "@solid-primitives/utils";
 import KeenSlider, {
   KeenSliderHooks,
   KeenSliderInstance,
   KeenSliderOptions,
   KeenSliderPlugin,
-  TrackDetails
-} from 'keen-slider';
+  TrackDetails,
+} from "keen-slider";
 
-declare module 'solid-js' {
+declare module "solid-js" {
   namespace JSX {
     interface Directives {
       slider: {};
@@ -37,7 +44,11 @@ declare module 'solid-js' {
  * <div use:slider>...</div>
  * ```
  */
-export const createSlider = <O = {}, P = {}, H extends string = KeenSliderHooks>(
+export const createSlider = <
+  O = {},
+  P = {},
+  H extends string = KeenSliderHooks
+>(
   options?: KeenSliderOptions<O, P, H> | Accessor<KeenSliderOptions<O, P, H>>,
   ...plugins: KeenSliderPlugin<O, P, H>[]
 ): [
@@ -69,19 +80,19 @@ export const createSlider = <O = {}, P = {}, H extends string = KeenSliderHooks>
   ) => ({
     selector: el.childNodes,
     ...opts(),
-    ...overrides
+    ...overrides,
   });
   const update = () => slider?.update(getOptions());
   // Slider creation method and directive function
   const create = (newEl: HTMLElement) => {
     el = newEl;
-    el.classList.add('keen-slider');
+    el.classList.add("keen-slider");
     onMount(() => {
       slider = new KeenSlider<O, P, H>(el, getOptions(), plugins);
-      slider.on('slideChanged', () => setCurrent(slider!.track.details.rel));
+      slider.on("slideChanged", () => setCurrent(slider!.track.details.rel));
     });
     onCleanup(destroy);
-    if (typeof options === 'function') {
+    if (typeof options === "function") {
       createEffect(on(() => options, update));
     }
   };
@@ -93,10 +104,14 @@ export const createSlider = <O = {}, P = {}, H extends string = KeenSliderHooks>
       prev: () => slider && slider.prev(),
       details: () => (slider ? slider.track.details : ({} as TrackDetails)),
       slider: () => slider,
-      moveTo: (id: number, duration = 250, absolute = false, easing?: (t: number) => number) =>
-        slider?.moveToIdx(id, absolute, { duration, easing: easing }),
+      moveTo: (
+        id: number,
+        duration = 250,
+        absolute = false,
+        easing?: (t: number) => number
+      ) => slider?.moveToIdx(id, absolute, { duration, easing: easing }),
       destroy,
-      update
-    }
+      update,
+    },
   ];
 };

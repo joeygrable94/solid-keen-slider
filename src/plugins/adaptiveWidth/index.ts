@@ -1,0 +1,1 @@
+export { adaptiveWidth } from "./adaptiveWidth";
