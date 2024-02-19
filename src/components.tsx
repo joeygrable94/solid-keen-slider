@@ -23,7 +23,7 @@ type SliderHelpers = (typeof sliderValues)[1];
 
 // Main context for the slider
 export const SliderContext = createContext(
-  createSignal<SliderHelpers | null>(null)
+  createSignal<SliderHelpers | null>(null),
 );
 
 /**
@@ -52,15 +52,15 @@ export const Slider: FlowComponent<{
   const [, setHelpers] = useContext(SliderContext);
   const [slider, helpers] = createSlider(
     props.options || {},
-    ...(props.plugins || [])
+    ...(props.plugins || []),
   );
   setHelpers(helpers);
   createEffect(
     on(
       () => access(props.children),
       () => queueMicrotask(() => helpers.update()),
-      { defer: true }
-    )
+      { defer: true },
+    ),
   );
   slider;
   return (

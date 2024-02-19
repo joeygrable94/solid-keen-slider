@@ -47,7 +47,7 @@ declare module "solid-js" {
 export const createSlider = <
   O = {},
   P = {},
-  H extends string = KeenSliderHooks
+  H extends string = KeenSliderHooks,
 >(
   options?: KeenSliderOptions<O, P, H> | Accessor<KeenSliderOptions<O, P, H>>,
   ...plugins: KeenSliderPlugin<O, P, H>[]
@@ -61,13 +61,13 @@ export const createSlider = <
       id: number,
       duration?: number,
       absolute?: boolean,
-      easing?: (t: number) => number
+      easing?: (t: number) => number,
     ) => void;
     details: Accessor<TrackDetails>;
     slider: Accessor<KeenSliderInstance<O, P, H> | undefined>;
     destroy: Accessor<void>;
     update: VoidFunction;
-  }
+  },
 ] => {
   let slider: KeenSliderInstance<O, P, H> | undefined;
   let el: HTMLElement;
@@ -75,7 +75,7 @@ export const createSlider = <
   const [current, setCurrent] = createSignal(opts()?.initial || 0);
   const destroy = () => slider && slider.destroy();
   const getOptions: Accessor<KeenSliderOptions<O, P, H> | undefined> = (
-    overrides = {}
+    overrides = {},
     // @ts-ignore
   ) => ({
     selector: el.childNodes,
@@ -108,7 +108,7 @@ export const createSlider = <
         id: number,
         duration = 250,
         absolute = false,
-        easing?: (t: number) => number
+        easing?: (t: number) => number,
       ) => slider?.moveToIdx(id, absolute, { duration, easing: easing }),
       destroy,
       update,

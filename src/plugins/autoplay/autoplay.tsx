@@ -27,7 +27,7 @@ export const autoplay = (
       duration?: number;
       easing?: (t: number) => number;
     };
-  }
+  },
 ) => {
   return (slider: KeenSliderInstance) => {
     let dispose: Function;
@@ -37,10 +37,10 @@ export const autoplay = (
           slider.moveToIdx(
             slider.track.details.position + 1,
             true,
-            options.animation
+            options.animation,
           ),
         interval,
-        setInterval
+        setInterval,
       );
     };
     // Pause the slider on drag
@@ -48,7 +48,7 @@ export const autoplay = (
       slider.on("dragStarted", () => dispose?.());
     }
     createEffect(() =>
-      !options.pause || options.pause() === false ? start() : dispose?.()
+      !options.pause || options.pause() === false ? start() : dispose?.(),
     );
   };
 };
