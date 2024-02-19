@@ -1,15 +1,15 @@
-import {
-  on,
-  createContext,
-  useContext,
-  createSignal,
-  FlowComponent,
-  createEffect,
-} from "solid-js";
-import { createSlider } from "./primitive";
-import { KeenSliderOptions, KeenSliderPlugin } from "keen-slider";
 import { access } from "@solid-primitives/utils";
+import { KeenSliderOptions, KeenSliderPlugin } from "keen-slider";
+import {
+  FlowComponent,
+  createContext,
+  createEffect,
+  createSignal,
+  on,
+  useContext,
+} from "solid-js";
 import { isServer } from "solid-js/web";
+import { createSlider } from "./primitive";
 
 // The following is a hacky way of extracting SliderHelpers
 interface Func<T> {
@@ -33,7 +33,7 @@ export const SliderContext = createContext(
  * @param props {KeenSLiderPlugin} plugins - A list of Solid Slider or Keen slider plugins.
  */
 export const SliderProvider: FlowComponent = (props) => (
-  <SliderContext.Provider value={createSignal(null)}>
+  <SliderContext.Provider value={createSignal<SliderHelpers | null>(null)}>
     {props.children}
   </SliderContext.Provider>
 );
