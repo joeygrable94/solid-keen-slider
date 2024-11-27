@@ -23,6 +23,25 @@ declare module "solid-js" {
   }
 }
 
+export type SliderControls<O, P, H extends string> = [
+  create: (el: HTMLElement) => void,
+  helpers: {
+    current: Accessor<number>;
+    next: VoidFunction;
+    prev: VoidFunction;
+    moveTo: (
+      id: number,
+      duration?: number,
+      absolute?: boolean,
+      easing?: (t: number) => number,
+    ) => void;
+    details: () => TrackDetails;
+    slider: () => KeenSliderInstance<O, P, H> | undefined;
+    destroy: VoidFunction;
+    update: VoidFunction;
+  },
+];
+
 /**
  * Creates a slider powered by KeenSlider.
  *
@@ -51,24 +70,7 @@ export const createSlider = <
 >(
   options?: KeenSliderOptions<O, P, H> | Accessor<KeenSliderOptions<O, P, H>>,
   ...plugins: KeenSliderPlugin<O, P, H>[]
-): [
-  create: (el: HTMLElement) => void,
-  helpers: {
-    current: Accessor<number>;
-    next: Accessor<void>;
-    prev: Accessor<void>;
-    moveTo: (
-      id: number,
-      duration?: number,
-      absolute?: boolean,
-      easing?: (t: number) => number,
-    ) => void;
-    details: Accessor<TrackDetails>;
-    slider: Accessor<KeenSliderInstance<O, P, H> | undefined>;
-    destroy: Accessor<void>;
-    update: VoidFunction;
-  },
-] => {
+): SliderControls<O, P, H> => {
   let slider: KeenSliderInstance<O, P, H> | undefined;
   let el: HTMLElement;
   const opts = () => access(options) as KeenSliderOptions<O, P, H>;
@@ -96,6 +98,14 @@ export const createSlider = <
       createEffect(on(() => options, update));
     }
   };
+  const moveTo = (
+    id: number,
+    duration = 250,
+    absolute = false,
+    easing?: (t: number) => number,
+  ) => {
+    slider?.moveToIdx(id, absolute, { duration, easing: easing });
+  };
   return [
     create,
     {
@@ -104,12 +114,7 @@ export const createSlider = <
       prev: () => slider && slider.prev(),
       details: () => (slider ? slider.track.details : ({} as TrackDetails)),
       slider: () => slider,
-      moveTo: (
-        id: number,
-        duration = 250,
-        absolute = false,
-        easing?: (t: number) => number,
-      ) => slider?.moveToIdx(id, absolute, { duration, easing: easing }),
+      moveTo,
       destroy,
       update,
     },
