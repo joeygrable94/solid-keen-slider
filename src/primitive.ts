@@ -1,11 +1,3 @@
-import {
-  on,
-  onMount,
-  createSignal,
-  onCleanup,
-  Accessor,
-  createEffect,
-} from "solid-js";
 import { access } from "@solid-primitives/utils";
 import KeenSlider, {
   KeenSliderHooks,
@@ -14,6 +6,14 @@ import KeenSlider, {
   KeenSliderPlugin,
   TrackDetails,
 } from "keen-slider";
+import {
+  Accessor,
+  createEffect,
+  createSignal,
+  on,
+  onCleanup,
+  onMount,
+} from "solid-js";
 
 declare module "solid-js" {
   namespace JSX {
@@ -71,7 +71,7 @@ export const createSlider = <
 ] => {
   let slider: KeenSliderInstance<O, P, H> | undefined;
   let el: HTMLElement;
-  const opts = () => access(options);
+  const opts = () => access(options) as KeenSliderOptions<O, P, H>;
   const [current, setCurrent] = createSignal(opts()?.initial || 0);
   const destroy = () => slider && slider.destroy();
   const getOptions: Accessor<KeenSliderOptions<O, P, H> | undefined> = (
